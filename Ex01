@@ -1,0 +1,70 @@
+CREATE TABLE Dono (
+    id_dono INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    email VARCHAR(100),
+    senha_hash VARCHAR(255),
+    data_cadastro DATETIME
+);
+
+CREATE TABLE Animal (
+    id_animal INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    especie ENUM('Cachorro', 'Gato'),
+    idade INT,
+    id_dono INT,
+    FOREIGN KEY (id_dono) REFERENCES Dono(id_dono)
+);
+
+CREATE TABLE Amizade (
+    id_amizade INT PRIMARY KEY AUTO_INCREMENT,
+    id_origem INT,
+    tipo_origem ENUM('Dono', 'Animal'),
+    id_destino INT,
+    tipo_destino ENUM('Dono', 'Animal'),
+    status ENUM('pendente', 'aceita', 'recusada') DEFAULT 'pendente',
+    data_solicitacao DATETIME
+);
+
+CREATE TABLE Postagem (
+    id_postagem INT PRIMARY KEY AUTO_INCREMENT,
+    id_dono INT,
+    conteudo TEXT,
+    data_postagem DATETIME,
+    FOREIGN KEY (id_dono) REFERENCES Dono(id_dono)
+);
+
+CREATE TABLE Curtida (
+    id_curtida INT PRIMARY KEY AUTO_INCREMENT,
+    id_postagem,
+    id_autor_curtida INT,
+    tipo_autor ENUM('Dono', 'Animal'),
+    data_curtida DATETIME,
+    FOREIGN KEY (id_postagem) REFERENCES Postagem(id_postagem)
+);
+
+CREATE TABLE Evento (
+    id_evento INT PRIMARY KEY AUTO_INCREMENT,
+    nome VARCHAR(100),
+    descricao TEXT,
+    data_evento DATETIME,
+    localizacao VARCHAR(255)
+);
+
+CREATE TABLE ParticipacaoEvento (
+    id_participacao INT PRIMARY KEY AUTO_INCREMENT,
+    id_dono INT,
+    id_evento INT,
+    data_confirmacao DATETIME,
+    FOREIGN KEY (id_dono) REFERENCES Dono(id_dono),
+    FOREIGN KEY (id_evento) REFERENCES Evento(id_evento)
+);
+
+CREATE TABLE Agenda (
+    id_agenda INT PRIMARY KEY AUTO_INCREMENT,
+    id_dono INT,
+    titulo VARCHAR(100),
+    descricao TEXT,
+    data_inicio DATETIME,
+    data_fim DATETIME,
+    FOREIGN KEY (id_dono) REFERENCES Dono(id_dono)
+);
