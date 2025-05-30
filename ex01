@@ -1,0 +1,25 @@
+CREATE TABLE Cliente (
+    id_cliente INT PRIMARY KEY,
+    nome VARCHAR(100),
+    cpf CHAR(11) UNIQUE,
+    email VARCHAR(100)
+);
+
+CREATE TABLE Conta (
+    id_conta INT PRIMARY KEY,
+    numero_conta VARCHAR(10) UNIQUE,
+    tipo ENUM('Corrente', 'Poupança'),
+    saldo DECIMAL(10, 2),
+    id_cliente INT,
+    FOREIGN KEY (id_cliente) REFERENCES Cliente(id_cliente)
+);
+
+CREATE TABLE Transacao (
+    id_transacao INT PRIMARY KEY,
+    id_conta_origem INT,
+    id_conta_destino INT,
+    valor DECIMAL(10, 2),
+    data_transacao DATETIME,
+    FOREIGN KEY (id_conta_origem) REFERENCES Conta(id_conta),
+    FOREIGN KEY (id_conta_destino) REFERENCES Conta(id_conta)
+);
